@@ -6,16 +6,14 @@
 #include <windows.h>
 #include <cstring>
 #include <iostream>
-#include <dsetup.h>
+
 #include "resource.h"
-#define DIRECTINPUT_VERSION 0x0800
-#include <cstring>
-#include <d3d9.h>
-#include <dinput.h>
-#include <d3dx9.h>
+
 #include "bitmapUtils.h"
+#include "RandomFunctionsIFound.h"
 HINSTANCE ghInstance = NULL;
 LOGFONTA GLOBAL_FONT = { 0 };
+
 /* this wont work in dx9 and i cannot make cmake work with dx8
 bool check_if_needs_directx() {
     int directx_version;
@@ -70,7 +68,7 @@ int directx_checker_dialog(void) {
     return directx_check_passed;
 }
 */
-
+/*
 struct EngineContext {
     IDirect3DDevice9* device;
     IDirect3D9* d3d;
@@ -78,7 +76,7 @@ struct EngineContext {
     IDirectInput8* dinput;
 
 
-};
+};*/
 int get_lang_bitmask() {
     LANGID langid;
     int lang_bitmask;
@@ -264,19 +262,57 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
     }
     return FALSE;
 }
-
+/*
 void contextHandler(const EngineContext & ctx)
 {
     HDC hdc = GetDC(ctx.hwnd);
 
-}
+}*/
 
+char g_path_Fend[1024];
+char g_path_Levels[1024];
+char g_path_Scene[1024];
+char g_path_Wheel[1024];
+char g_path_Intro[1024];
+char g_path_Ending[1024];
+char g_path_Demos[1024];
+char g_path_Music[1024];
+char g_path_Voices[1024];
+char g_path_References[1024];
+char g_path_Bonus[1024];
 void create_window(HINSTANCE hInstance) {
     HWND main_window;
     WNDCLASS wc = {};
 
     char CLASS_NAME[256];
-    strncpy(CLASS_NAME, "Sheep,_Dog'n_Wolf_D3D", 0xFF);
+    char local_exeDir [512];
+
+
+    GetExeDirectory(local_exeDir);
+    custom_strcopy(g_path_Levels,local_exeDir);
+    custom_strcopy(g_path_Scene,local_exeDir);
+    custom_strcopy(g_path_Wheel,local_exeDir);
+    custom_strcopy(g_path_Intro,local_exeDir);
+    custom_strcopy(g_path_Fend,local_exeDir);
+    custom_strcopy(g_path_Ending,local_exeDir);
+    custom_strcopy(g_path_Demos,local_exeDir);
+    custom_strcopy(g_path_Music,local_exeDir);
+    custom_strcopy(g_path_Voices,local_exeDir);
+    custom_strcopy(g_path_References,local_exeDir);
+    custom_strcopy(g_path_Bonus,local_exeDir);
+    custom_strcat(g_path_Levels, "\\Levels\\Lvl-%02d\\Lvl-%02d");
+    custom_strcat(g_path_Scene, "\\Levels\\Scene\\Scene");
+    custom_strcat(g_path_Wheel, "\\Levels\\Wheel\\Wheel");
+    custom_strcat(g_path_Intro, "\\Levels\\Intro\\Intro");
+    custom_strcat(g_path_Fend, "\\Levels\\Fend\\Fend");
+    custom_strcat(g_path_Ending, "\\Levels\\Ending\\Ending");
+    custom_strcat(g_path_Demos, "\\Levels\\Demos");
+    custom_strcat(g_path_Music, "\\Musics\\");
+    custom_strcat(g_path_Voices, "\\Voices\\");
+    custom_strcat(g_path_References, "\\References\\");
+    custom_strcat(g_path_Bonus, "\\Bonus\\");
+
+
     CLASS_NAME[0xFF - 1] = '\0';
 
     wc.style = 0;
@@ -289,7 +325,8 @@ void create_window(HINSTANCE hInstance) {
     wc.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
     wc.lpszMenuName = NULL;
     wc.lpszClassName = CLASS_NAME;
-
+    std::cout << g_path_Levels << std::endl;
+    printf(g_path_Levels, 2, 2 );
     RegisterClass(&wc);
 
     main_window = CreateWindow(
@@ -328,6 +365,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPSTR lpCmdLine,
                      int nCmdShow) {
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
     ghInstance = hInstance;
     // Get The actual font
     strcpy(GLOBAL_FONT.lfFaceName, "Tahoma");
