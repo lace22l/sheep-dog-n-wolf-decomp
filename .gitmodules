@@ -1,0 +1,3 @@
+[submodule "tools/texture-viewer"]
+	path = tools/texture-viewer
+	url = https://github.com/lace22l/Sheep-N-Dog-DAV-Texture-Viewer/
