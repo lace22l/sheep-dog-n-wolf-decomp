@@ -2,6 +2,8 @@
 // Created by laceperro on 4/2/2026.
 //
 #include <windows.h>
+#include <locale>
+
 struct WaveStream {
     DWORD unk_00;
     DWORD pFormat;

@@ -12,18 +12,12 @@ add_executable(SheepRaiderDecomp WIN32
         resources/resource.h
         resources/embed_bmp.rc
         resources/launcher.rc
+        src/File/FileInfo.h
         src/RandomFunctionsIFound.cpp
         #src/main2.cpp
-)
+        src/File/FileFunctions.cpp src/Strings/StringFunctions.cpp src/Strings/StringFunctions.h)
 
-add_executable(ImplTracker
-        src/tracker.cpp
-        src/RandomFunctionsIFound.h
-        src/Structs/structs.cpp
-)
-#target_compile_definitions(ImplTracker PRIVATE
-#        SRC_DIR="${CMAKE_SOURCE_DIR}/src/main2.cpp"
-#)*/
+
 target_include_directories(SheepRaiderDecomp PRIVATE
 
         resources

@@ -11,72 +11,21 @@
 
 #include "bitmapUtils.h"
 #include "RandomFunctionsIFound.h"
+#include "Strings/StringFunctions.h"
+char g_path_Levels[1024];
+char g_path_Fend[1024];
+char g_path_Scene[1024];
+char g_path_Wheel[1024];
+char g_path_Intro[1024];
+char g_path_Ending[1024];
+char g_path_Demos[1024];
+char g_path_Music[1024];
+char g_path_Voices[1024];
+char g_path_References[1024];
+char g_path_Bonus[1024];
 HINSTANCE ghInstance = NULL;
 LOGFONTA GLOBAL_FONT = { 0 };
-
-/* this wont work in dx9 and i cannot make cmake work with dx8
-bool check_if_needs_directx() {
-    int directx_version;
-    DWORD local_c[4];
-    DWORD needed_version;
-
-    directx_version = DirectXSetupGetVersion(&needed_version, local_c);
-    if ((directx_version != 0) && (0x40007 < needed_version)) {
-        return true;
-    }
-    return false;
-}
-
-int directx_checker_dialog(void) {
-    bool doesnt_needs_to_install_directx;
-    int clicked_option;
-    LPCSTR window_message;
-    undefined2 extraout_var;
-    undefined2 extraout_var_00;
-    undefined2 extraout_var_01;
-    undefined1 local_214[516];
-    undefined1 *local_10;
-    undefined4 local_c;
-    undefined1 directx_check_passed;
-    UINT DIALOG_TYPE_FLAG;
-    LPCSTR window_text;
-
-    directx_check_passed = 1;
-    doesnt_needs_to_install_directx = check_if_needs_directx();
-    if (!doesnt_needs_to_install_directx) {
-        /* yes / no buttons = 4
-        DIALOG_TYPE_FLAG = 4;
-        window_text = (LPCSTR) FUN_0054fd25(1, CONCAT22(extraout_var, DAT_0057910a), 0x10);
-        window_message = (LPCSTR) FUN_0054fd25(8, CONCAT22(extraout_var_01, DAT_0057910a), 0x800);
-        clicked_option = MessageBoxA(window_handler, window_message, window_text, DIALOG_TYPE_FLAG);
-        if (clicked_option == 6) {
-            FUN_00401053(local_214);
-            FUN_00565860(local_214, s_\Install\dxsetup.exe_005793cc);
-            local_10 = local_214;
-            local_c = 0;
-            FUN_00565bbe(0, local_214, &local_10);
-        } else {
-            /* Error Dialog
-
-            DIALOG_TYPE_FLAG = 0x10;
-            window_text = (LPCSTR) FUN_0054fd25(1, DAT_0057910a, 0x10);
-            window_message = (LPCSTR) FUN_0054fd25(8, CONCAT22(extraout_var_00, DAT_0057910a), 0x1000);
-            MessageBoxA(window_handler, window_message, window_text, DIALOG_TYPE_FLAG);
-            directx_check_passed = 0;
-        }
-    }
-    return directx_check_passed;
-}
-*/
-/*
-struct EngineContext {
-    IDirect3DDevice9* device;
-    IDirect3D9* d3d;
-    HWND hwnd;
-    IDirectInput8* dinput;
-
-
-};*/
+int g_filesBytreRead;
 int get_lang_bitmask() {
     LANGID langid;
     int lang_bitmask;
@@ -109,36 +58,7 @@ int get_lang_bitmask() {
     }
     return lang_bitmask;
 }
-/*
-EngineContext directx_init(HWND windowInstance, HINSTANCE hInstance, int mystery_param) {
-    // DirectDrawEnumerate(directx_callback_func,0,7); THIS IS DEPRECATED IN DX9
-        EngineContext ctx = {};
-        ctx.d3d = Direct3DCreate9(D3D_SDK_VERSION);
-        ctx.hwnd = windowInstance;
-        D3DPRESENT_PARAMETERS pp = {};
-        pp.Windowed = FALSE;
-        pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-        pp.hDeviceWindow = windowInstance;
-        pp.BackBufferFormat = D3DFMT_UNKNOWN;
-        ctx.d3d->CreateDevice(
-          D3DADAPTER_DEFAULT,
-          D3DDEVTYPE_HAL,
-          windowInstance,
-          D3DCREATE_HARDWARE_VERTEXPROCESSING,
-          &pp,
-          &ctx.device
-      );
 
-        DirectInput8Create(
-            hInstance,
-            DIRECTINPUT_VERSION,
-            IID_IDirectInput8,
-            (void**)&ctx.dinput,
-            nullptr);
-        return ctx;
-
-
-}*/
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
         case WM_DESTROY:
@@ -262,26 +182,12 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
     }
     return FALSE;
 }
-/*
-void contextHandler(const EngineContext & ctx)
-{
-    HDC hdc = GetDC(ctx.hwnd);
 
-}*/
 
-char g_path_Fend[1024];
-char g_path_Levels[1024];
-char g_path_Scene[1024];
-char g_path_Wheel[1024];
-char g_path_Intro[1024];
-char g_path_Ending[1024];
-char g_path_Demos[1024];
-char g_path_Music[1024];
-char g_path_Voices[1024];
-char g_path_References[1024];
-char g_path_Bonus[1024];
+
+
 void create_window(HINSTANCE hInstance) {
-    HWND main_window;
+    HWND hWnd;
     WNDCLASS wc = {};
 
     char CLASS_NAME[256];
@@ -325,39 +231,98 @@ void create_window(HINSTANCE hInstance) {
     wc.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
     wc.lpszMenuName = NULL;
     wc.lpszClassName = CLASS_NAME;
-    std::cout << g_path_Levels << std::endl;
-    printf(g_path_Levels, 2, 2 );
-    RegisterClass(&wc);
 
-    main_window = CreateWindow(
-        CLASS_NAME, // class name
-        "", // window title
-        WS_OVERLAPPEDWINDOW, // style
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        800,
-        600,
-        NULL,
-        NULL,
-        hInstance,
-        NULL
-    );
+    class_id = RegisterClassA(&wc);
+    if (class_id == 0) {
+        MessageBoxA(NULL, "Unable to register window class: ", "SheepD3D ERROR", MB_ICONERROR);
+        return 1;
 
-    MSG msg = {};
-
-    int result = DialogBox(hInstance, MAKEINTRESOURCE(IDD_LAUNCHER), NULL, DialogProc);
-
-    if (result == 1) {
-        return;
     }
-    ShowWindow(main_window, SW_SHOW);
-    UpdateWindow(main_window);
-    //EngineContext ctx = directx_init(main_window, hInstance, 3);
-    //contextHandler(ctx);
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
+
+        g_hInstance = hInstance;
+
+        hWnd = CreateWindowExA(
+                0,
+                CLASS_NAME,
+                CLASS_NAME,
+                WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+                CW_USEDEFAULT,
+                CW_USEDEFAULT,
+                800,
+                600,
+                NULL,
+                NULL,
+                hInstance,
+                NULL
+        );
+
+        if (hWnd == NULL) {
+            MessageBoxA(NULL, "Unable to create rendering window", "SheepD3D ERROR", MB_ICONERROR);
+            return 1;
+        }
+
+        if (!directx_checker_dialog()) {
+            return 1;
+        }
+
+        // Init engine
+        g_pEngine = new EngineState();
+        if (g_pEngine == nullptr) {
+            return 1;
+        }
+        init_dx_device(hWnd, hInstance, 3);
+
+        // Init DirectSound manager
+        DSManager *dsManager = new DSManager();
+        if (dsManager == nullptr) {
+            g_pDSoundBuffer = nullptr;
+        } else {
+            g_pDSoundBuffer = DSManager_Init(dsManager);
+        }
+
+        //FUN_0040369c();
+
+        // Launcher dialog - if user cancelled, exit
+        int result = DialogBox(hInstance, MAKEINTRESOURCE(IDD_LAUNCHER), NULL, DialogProc);
+        if (result != 1) {
+            return 0;
+        }
+
+        // Init DirectX
+        HRESULT hResult = something_directx_is_here(g_pEngine);
+        if (FAILED(hResult)) {
+            const char *windowTitle = get_localized_string(&g_pLocalization, 1, lang_offset, 0x10);
+            const char *windowText  = get_localized_string(&g_pLocalization, 8, lang_offset, 0x40);
+            MessageBoxA(hWnd, windowText, windowTitle, MB_ICONERROR);
+            return 1;
+        }
+
+        // Init DirectSound (22050 Hz, 16-bit)
+        hResult = DS_CreateDevice(hWnd, 22050, 16);
+        if (FAILED(hResult)) {
+            const char *windowTitle = get_localized_string(&g_pLocalization, 1, lang_offset, 0x10);
+            const char *windowText  = get_localized_string(&g_pLocalization, 8, lang_offset, 0x80);
+            MessageBoxA(hWnd, windowText, windowTitle, MB_ICONERROR);
+            return 1;
+        }
+
+        // Show main window and run game loop
+        ShowWindow(hWnd, SW_SHOW);
+        UpdateWindow(hWnd);
+
+        MSG msg = {};
+        while (GetMessage(&msg, NULL, 0, 0)) {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+        ReleaseDirectXObjects();
+        delete g_pEngine;
+        delete dsManager;
+
+        return 0;
+
+
 }
 
 

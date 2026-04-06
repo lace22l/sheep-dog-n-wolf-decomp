@@ -1,0 +1,3 @@
+/Users/lace22/CLionProjects/sheep-wolf-n-dog-decomp/cmake-build-debug/CMakeFiles/SheepRaiderDecomp.dir
+/Users/lace22/CLionProjects/sheep-wolf-n-dog-decomp/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/lace22/CLionProjects/sheep-wolf-n-dog-decomp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
