@@ -15,7 +15,12 @@ add_executable(SheepRaiderDecomp WIN32
         src/File/FileInfo.h
         src/RandomFunctionsIFound.cpp
         #src/main2.cpp
-        src/File/FileFunctions.cpp src/Strings/StringFunctions.cpp src/Strings/StringFunctions.h)
+        #src/File/FileFunctions.cpp
+        src/Strings/StringFunctions.cpp
+        src/Strings/StringFunctions.h
+        src/globals.h
+        src/Structs/EngineState.h
+)
 
 
 target_include_directories(SheepRaiderDecomp PRIVATE

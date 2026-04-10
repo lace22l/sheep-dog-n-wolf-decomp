@@ -2,6 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tools/Sheep-N-Dog-DAV-Texture-Viewer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tools/texture-viewer" vcs="Git" />
   </component>
 </project>

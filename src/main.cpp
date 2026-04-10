@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "resource.h"
-
+#include "globals.h"
 #include "bitmapUtils.h"
 #include "RandomFunctionsIFound.h"
 #include "Strings/StringFunctions.h"
@@ -186,7 +186,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 
 
 
-void create_window(HINSTANCE hInstance) {
+int create_window(HINSTANCE hInstance) {
     HWND hWnd;
     WNDCLASS wc = {};
 
@@ -232,7 +232,7 @@ void create_window(HINSTANCE hInstance) {
     wc.lpszMenuName = NULL;
     wc.lpszClassName = CLASS_NAME;
 
-    class_id = RegisterClassA(&wc);
+    ATOM class_id = RegisterClassA(&wc);
     if (class_id == 0) {
         MessageBoxA(NULL, "Unable to register window class: ", "SheepD3D ERROR", MB_ICONERROR);
         return 1;
@@ -261,24 +261,24 @@ void create_window(HINSTANCE hInstance) {
             return 1;
         }
 
-        if (!directx_checker_dialog()) {
+        /*if (!directx_checker_dialog()) {
             return 1;
-        }
+        }*/
 
         // Init engine
         g_pEngine = new EngineState();
         if (g_pEngine == nullptr) {
             return 1;
         }
-        init_dx_device(hWnd, hInstance, 3);
+        //init_dx_device(hWnd, hInstance, 3);
 
         // Init DirectSound manager
-        DSManager *dsManager = new DSManager();
-        if (dsManager == nullptr) {
-            g_pDSoundBuffer = nullptr;
-        } else {
-            g_pDSoundBuffer = DSManager_Init(dsManager);
-        }
+        //DSManager *dsManager = new DSManager();
+        //if (dsManager == nullptr) {
+        //    g_pDSoundBuffer = nullptr;
+        //} else {
+        //    g_pDSoundBuffer = DSManager_Init(dsManager);
+        //}
 
         //FUN_0040369c();
 
@@ -287,7 +287,7 @@ void create_window(HINSTANCE hInstance) {
         if (result != 1) {
             return 0;
         }
-
+/*
         // Init DirectX
         HRESULT hResult = something_directx_is_here(g_pEngine);
         if (FAILED(hResult)) {
@@ -295,16 +295,16 @@ void create_window(HINSTANCE hInstance) {
             const char *windowText  = get_localized_string(&g_pLocalization, 8, lang_offset, 0x40);
             MessageBoxA(hWnd, windowText, windowTitle, MB_ICONERROR);
             return 1;
-        }
+        }*/
 
         // Init DirectSound (22050 Hz, 16-bit)
-        hResult = DS_CreateDevice(hWnd, 22050, 16);
+        /*hResult = DS_CreateDevice(hWnd, 22050, 16);
         if (FAILED(hResult)) {
             const char *windowTitle = get_localized_string(&g_pLocalization, 1, lang_offset, 0x10);
             const char *windowText  = get_localized_string(&g_pLocalization, 8, lang_offset, 0x80);
             MessageBoxA(hWnd, windowText, windowTitle, MB_ICONERROR);
             return 1;
-        }
+        }*/
 
         // Show main window and run game loop
         ShowWindow(hWnd, SW_SHOW);
@@ -316,9 +316,9 @@ void create_window(HINSTANCE hInstance) {
             DispatchMessage(&msg);
         }
 
-        ReleaseDirectXObjects();
+        //ReleaseDirectXObjects();
         delete g_pEngine;
-        delete dsManager;
+        //delete dsManager;
 
         return 0;
 

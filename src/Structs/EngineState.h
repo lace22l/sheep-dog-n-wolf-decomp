@@ -1,0 +1,11 @@
+//
+// Created by laceperro on 4/10/2026.
+//
+
+#ifndef SHEEPRAIDERDECOMP_ENGINESTATE_H
+#define SHEEPRAIDERDECOMP_ENGINESTATE_H
+
+struct EngineState{
+
+};
+#endif //SHEEPRAIDERDECOMP_ENGINESTATE_H
